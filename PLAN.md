@@ -1,3 +1,6 @@
+# Rules for Hooks
+https://web.compass.lighthouselabs.ca/days/w07d3/activities/1005
+
 ## The Appointment Component
 * Create and Appointment folder and index.jsx and styles.scss files
   * Begin stories section with Appointment component
