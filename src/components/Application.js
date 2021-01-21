@@ -4,7 +4,7 @@ import axios from 'axios';
 import DayList from "components/DayList";
 import Appointment from "components/Appointment"
 import "components/Application.scss";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors"
+import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "helpers/selectors"
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -32,7 +32,8 @@ export default function Application(props) {
   }, []);
   
   const dailyAppointments = getAppointmentsForDay(state, state.day);
-  
+  const interviewers = getInterviewersForDay(state, state.day);
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -60,7 +61,12 @@ export default function Application(props) {
           const interview = getInterview(state, appointment.interview);
           
           return (
-            <Appointment key={appointment.id} {...appointment} interview={interview}/>
+            <Appointment
+              key={appointment.id}
+              {...appointment}
+              interviewers={interviewers}
+              interview={interview}
+            />
           );
         })}
         <Appointment key="last" time="5pm" />
