@@ -54,10 +54,13 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={() => transition(CONFIRM)}
+          onEdit={() => transition(CREATE)}
         />
       )}
       {mode === CREATE && (
         <Form
+          name={props.interview && props.interview.student}
+          interviewer={props.interview && props.interview.interviewer.id}
           interviewers={props.interviewers}
           onSave={save}
           onCancel={() => back()}
