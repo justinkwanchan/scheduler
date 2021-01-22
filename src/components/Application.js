@@ -21,7 +21,7 @@ export default function Application(props) {
       axios.get('/api/days'),
       axios.get('/api/appointments'),
       axios.get('/api/interviewers')
-    ]).then((all) => {
+    ]).then(all => {
       setState(prev => ({
         ...prev,
         days: all[0].data,
@@ -30,6 +30,31 @@ export default function Application(props) {
       }));
     });
   }, []);
+
+  // On click of the Save button in form
+  function bookInterview(id, interview) {
+    
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    
+    // "When the response comes back we update the state using the existing setState."
+    // Cannot get this to work within the promise returned by the axios call.
+    setState(prev => ({
+      ...prev,
+      appointments
+    }));
+    
+    return axios.put(`/api/appointments/${id}`, { interview }).then(response => {
+      // Maybe something here eventually
+    });
+  }
   
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day);
@@ -43,6 +68,7 @@ export default function Application(props) {
         {...appointment}
         interviewers={interviewers}
         interview={interview}
+        bookInterview={bookInterview}
       />
     );
   })
