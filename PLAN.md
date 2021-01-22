@@ -5,8 +5,9 @@ https://web.compass.lighthouselabs.ca/days/w07d3/activities/1005
 * Create and Appointment folder and index.jsx and styles.scss files
   * Begin stories section with Appointment component
 * Create Header.jsx and Empty.jsx as well as stories
+* Internal Navigation => https://web.compass.lighthouselabs.ca/061e722e-2a48-497b-9300-fe24b8dd8547
 
-### The Form Component
+## The Form Component
 
 The Form component should track the following state:
 
