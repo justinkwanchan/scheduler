@@ -43,15 +43,11 @@ export default function Application(props) {
       [id]: appointment
     };
     
-    // "When the response comes back we update the state using the existing setState."
-    // Cannot get this to work within the promise returned by the axios call.
-    setState(prev => ({
-      ...prev,
-      appointments
-    }));
-    
-    return axios.put(`/api/appointments/${id}`, { interview }).then(response => {
-      // Maybe something here eventually
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      setState(prev => ({
+        ...prev,
+        appointments
+      }));
     });
   };
 
@@ -66,12 +62,12 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    setState(prev => ({
-      ...prev,
-      appointments
-    }));
-    
-    return axios.delete(`/api/appointments/${id}`);
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      setState(prev => ({
+        ...prev,
+        appointments
+      }));
+    });
   };
   
   const dailyAppointments = getAppointmentsForDay(state, state.day);
