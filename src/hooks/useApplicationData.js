@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-export default function useApplicationData(initial) {
+export default function useApplicationData() {
   const [state, setState] = useState({
     day: 'Monday',
     days: [],
     appointments: {},
     interviewers: {}
   });
+  
+  // const spots = Object.values(state.appointments).map(appointment => appointment.interview);
+  // const xArr = [0, 0, 0, 0, 0];
+  // for (let i = 0; i < spots.length; i++) {
+  //   if (i >= 0 && i <= 4 && !spots[i]) xArr[0]++;
+  //   if (i >= 5 && i <= 9 && !spots[i]) xArr[1]++;
+  //   if (i >= 10 && i <= 14 && !spots[i]) xArr[2]++;
+  //   if (i >= 15 && i <= 19 && !spots[i]) xArr[3]++;
+  //   if (i >= 20 && i <= 24 && !spots[i]) xArr[4]++;
+  // }
   
   const setDay = day => setState({ ...state, day });
   
@@ -38,6 +48,10 @@ export default function useApplicationData(initial) {
       ...state.appointments,
       [id]: appointment
     };
+
+    const spots = state.days;
+    const day = Math.floor((id - 1) / 5) + 1;
+    console.log(day);
     
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       setState(prev => ({
