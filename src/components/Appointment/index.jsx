@@ -18,6 +18,7 @@ const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
 const ERROR_SAVE = 'ERROR_SAVE'
 const ERROR_DELETE = 'ERROR_DELETE'
+const ERROR_INPUTS = 'ERROR_INPUTS'
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
@@ -32,10 +33,14 @@ export default function Appointment(props) {
 
     transition(SAVING, true);
 
-    props
-      .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
-      .catch(() => transition(ERROR_SAVE, true));
+    if (!interviewer || !name) {
+      setTimeout(() => transition(ERROR_INPUTS, true), 1000);
+    } else {
+      props
+        .bookInterview(props.id, interview)
+        .then(() => transition(SHOW))
+        .catch(() => transition(ERROR_SAVE, true));
+    }
   }
 
   function destroy() {
@@ -85,6 +90,12 @@ export default function Appointment(props) {
       {mode === ERROR_DELETE && (
         <Error
           message={'Could not delete appointment.'}
+          onClose={() => back()}
+        />
+      )}
+      {mode === ERROR_INPUTS && (
+        <Error
+          message={'Name left blank or interviewer unselected.'}
           onClose={() => back()}
         />
       )}
