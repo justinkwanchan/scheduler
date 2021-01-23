@@ -9,19 +9,9 @@ export default function useApplicationData() {
     interviewers: {}
   });
   
-  // const spots = Object.values(state.appointments).map(appointment => appointment.interview);
-  // const xArr = [0, 0, 0, 0, 0];
-  // for (let i = 0; i < spots.length; i++) {
-  //   if (i >= 0 && i <= 4 && !spots[i]) xArr[0]++;
-  //   if (i >= 5 && i <= 9 && !spots[i]) xArr[1]++;
-  //   if (i >= 10 && i <= 14 && !spots[i]) xArr[2]++;
-  //   if (i >= 15 && i <= 19 && !spots[i]) xArr[3]++;
-  //   if (i >= 20 && i <= 24 && !spots[i]) xArr[4]++;
-  // }
-  
   const setDay = day => setState({ ...state, day });
   
-  // Load information from database on pageload
+  // Load information from database on page load
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
@@ -37,6 +27,23 @@ export default function useApplicationData() {
     });
   }, []);
 
+  /**
+   * Return a 'days' object to update the state with number of spots remaining
+   * Create: spots - 1, Edit: spots, Delete: spots + 1
+   */
+  const dayBuffer = (id, remove = false) => {
+    const daysBuffer = [ ...state.days ];
+
+    if (!state.appointments[id].interview || remove) {
+      const day = Math.floor((id - 1) / 5);
+      const spots = state.days[day].spots;
+      const modifier = remove ? 1 : -1;
+      daysBuffer[day] = { ...state.days[day], spots: spots + (1 * modifier) };
+    }
+    
+    return daysBuffer;
+  };
+  
   // On click of the Save button in form
   function bookInterview(id, interview) {
     const appointment = {
@@ -49,19 +56,18 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    const spots = state.days;
-    const day = Math.floor((id - 1) / 5) + 1;
-    console.log(day);
+    const daysBuffer = dayBuffer(id);
     
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       setState(prev => ({
         ...prev,
-        appointments
+        appointments,
+        days: daysBuffer
       }));
     });
   };
 
-  // On click of the Confirm button Delete confirmation
+  // On click of the Confirm button in the Delete confirmation panel
   function cancelInterview(id) {
     const appointment = {
       ...state.appointments[id],
@@ -73,10 +79,13 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
+    const daysBuffer = dayBuffer(id, true);
+    
     return axios.delete(`/api/appointments/${id}`).then(() => {
       setState(prev => ({
         ...prev,
-        appointments
+        appointments,
+        days: daysBuffer
       }));
     });
   };
