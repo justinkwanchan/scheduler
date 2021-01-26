@@ -21,7 +21,9 @@ const ERROR_DELETE = 'ERROR_DELETE';
 const ERROR_INPUTS = 'ERROR_INPUTS';
 
 export default function Appointment(props) {
-  const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
 
   function save(name, interviewer) {
     const interview = {
@@ -50,7 +52,7 @@ export default function Appointment(props) {
   }
 
   return (
-    <article className='appointment'>
+    <article data-testid='appointment' className='appointment'>
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message={'Saving'} />}
@@ -83,10 +85,16 @@ export default function Appointment(props) {
         <Error message={'Could not save appointment.'} onClose={() => back()} />
       )}
       {mode === ERROR_DELETE && (
-        <Error message={'Could not delete appointment.'} onClose={() => back()} />
+        <Error
+          message={'Could not delete appointment.'}
+          onClose={() => back()}
+        />
       )}
       {mode === ERROR_INPUTS && (
-        <Error message={'Name left blank or interviewer unselected.'} onClose={() => back()} />
+        <Error
+          message={'Name left blank or interviewer unselected.'}
+          onClose={() => back()}
+        />
       )}
     </article>
   );
