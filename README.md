@@ -1,6 +1,6 @@
 # Interview Scheduler
 
-Interview Scheduler is a simple, single-page application for scheduling appointments. Built using React, it allows users to create, edit, and delete appointments within an arbitrary week. All updates are dynamically performed without page refreshing.
+Interview Scheduler is a simple, single-page application for scheduling appointments. Built using React, it allows users to create, edit, and delete appointments within an arbitrary week. Data is saved to an API server using PostgreSQL database.
 
 Additional features include:
 * A Tweet form which is hidden away and can be activated by clicking on the command or arrows in the top right corner of the app
