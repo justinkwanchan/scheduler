@@ -90,5 +90,5 @@ export default function useApplicationData() {
     });
   }
 
-  return { state, bookInterview, cancelInterview };
+  return { state, setDay, bookInterview, cancelInterview };
 }
